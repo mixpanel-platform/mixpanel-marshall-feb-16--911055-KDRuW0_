@@ -7,9 +7,90 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
-    <script>
-      // Run queries and display results here
-    </script>
+          <div class="mixpanel-platform-section">
+          <div id="dates"></div>
+          <div class="events">
+              <div class="label">Baseline or Experiment?:</div>
+              <input id="event_list" value="Baseline performance,Experiment performance">
+              <div id="run">RUN</div>
+          </div>
+          <div id="graph"></div>
+      </div>
+      
+// Set a global variable for the Custom Query result
+    var cqResult;
+
+
+// We'll need to convert dates to strings to include them in our query
+  function date_to_string(d) {
+      return d.toISOString().split('T')[0];
+    }
+
+var datepicker = $('#dates').MPDatepicker();
+var event_list_input;
+
+function runQuery() {
+    event_list_input = $('#event_list').val().split(',');
+    path_length_input = parseInt($('#path_length').val());
+    var dates = datepicker.val();
+    // clear previous query
+        $('#path svg').hide();
+
+        // grab the Custom Query script as a string
+        var script = $('#cq').html();
+        // trim all extra whitespace using jQuery trim
+        script = $.trim(script);
+        // grab the parameters from the inputs we defined
+        var queryParams = {
+            from_date: date_to_string(dates.from),
+            to_date: date_to_string(dates.to),
+            event_list: event_list_input,
+        }
+        // convert to string
+        var params = {
+            params: JSON.stringify(queryParams)
+        };
+        
+        MP.api.custom_query(script, params).done(function(results) {
+            cqResult = results[0];
+        });
+}
+
+    $(document).ready(function() {
+      runQuery();
+    });
+    $('#dates').on('change', function() {
+      runQuery();
+    });
+    $('#run').on('click', function() {
+      runQuery();
+    });
+
+
+<script type="text/cq" id="cq">
+getLift = function ( event, letter ) {
+    return event.properties["lift-".concat(letter)];
+},
+getALift = function (item) {
+  return getLift(item, "A");
+};
+
+function main() {
+  return Events({
+    to_date: "2016-03-22", // new Date().toISOString().split("T")[0],
+    from_date: "2016-03-21", // new Date().toISOString().split("T")[0],
+  })
+  .filter(function(e) {
+    return e.name == "Baseline performance";
+  })
+  .groupBy(["properties.project-id"], mixpanel.reducer.numeric_summary(getALift))
+  .map(function(project) {
+    summary = project.value;
+    project_id = project.key[0];
+    return summary.sum_squares / (summary.count - 1);
+  });
+}
+</script>
+
   </body>
 </html>
