@@ -35,10 +35,10 @@
               else
                 return (numArr[half-1] + numArr[half]) / 2.0;
               }
-            console.log(median(results[0]))
+            console.log(median(results))
             
             $('<div></div>').appendTo('body').MPTable({
-              data: {"Median A Variance": median(results[0])}
+              data: {"Median A Variance": median(results)}
             })
             
         });
