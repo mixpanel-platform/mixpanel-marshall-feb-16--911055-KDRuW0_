@@ -5,44 +5,38 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
   </head>
   <body class="mixpanel-platform-body">
-      <div class="mixpanel-platform-section">
-          <div id="run">RUN</div>
-          <div id="table"></div>
-      </div>
-      
-// Set a global variable for the Custom Query result
+    <div class="mixpanel-platform-section">
+        <div id="graph"></div>
+    </div>
+    <script>
+    // Set a global variable for the Custom Query result
     var cqResult;
 
-function runQuery() {
-    median = function( numArr ) {
-    numArr.sort( function(a,b) {return a - b;} );
-    var half = Math.floor(numArr.length/2);
-    if(numArr.length % 2)
-        return numArr[half];
-    else
-        return (numArr[half-1] + numArr[half]) / 2.0;
-    }
-
-    // clear previous query
+    function runQuery() {
         $('#path svg').hide();
-
         // grab the Custom Query script as a string
         var script = $('#cq').html();
         // trim all extra whitespace using jQuery trim
         script = $.trim(script);
         // grab the parameters from the inputs we defined
-
         MP.api.custom_query(script).done(function(results) {
             cqResult = results[0];
-            console.log(cqResult)
-            $('<div></div>').appendTo('body').MPTable({
-            data: median(cqResult)
-            firstColHeader: "A-Variance"
+            median = function( numArr ) {
+            numArr.sort( function(a,b) {return a - b;} );
+            var half = Math.floor(numArr.length/2);
+            if(numArr.length % 2)
+              return numArr[half];
+            else
+              return (numArr[half-1] + numArr[half]) / 2.0;
+            }
+            var med = median(cqResult);
+            console.log(med)
         });
-}
-
+    }
     $(document).ready(function() {
       runQuery();
     });
@@ -53,8 +47,7 @@ function runQuery() {
       runQuery();
     });
 
-
-<script type="text/cq" id="cq">
+    <script type="text/cq" id="cq">
 getLift = function ( event, letter ) {
     return event.properties["lift-".concat(letter)];
 },
@@ -77,7 +70,8 @@ function main() {
     return summary.sum_squares / (summary.count - 1);
   });
 }
-</script>
+    
 
+    </script>
   </body>
 </html>
