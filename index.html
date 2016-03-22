@@ -14,12 +14,11 @@
               <input id="event_list" value="Baseline performance,Experiment performance">
               <div id="run">RUN</div>
           </div>
-          <div id="graph"></div>
+          <div id="table"></div>
       </div>
       
 // Set a global variable for the Custom Query result
     var cqResult;
-
 
 // We'll need to convert dates to strings to include them in our query
   function date_to_string(d) {
@@ -33,6 +32,16 @@ function runQuery() {
     event_list_input = $('#event_list').val().split(',');
     path_length_input = parseInt($('#path_length').val());
     var dates = datepicker.val();
+    median = function( numArr ) {
+    numArr.sort( function(a,b) {return a - b;} );
+    var half = Math.floor(numArr.length/2);
+    if(numArr.length % 2)
+        return numArr[half];
+    else
+        return (numArr[half-1] + numArr[half]) / 2.0;
+  }
+
+
     // clear previous query
         $('#path svg').hide();
 
@@ -53,6 +62,9 @@ function runQuery() {
         
         MP.api.custom_query(script, params).done(function(results) {
             cqResult = results[0];
+            $('<div></div>').appendTo('body').MPTable({
+            data: median(cqResult)
+            firstColHeader: "A-Variance"
         });
 }
 
