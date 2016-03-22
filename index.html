@@ -33,17 +33,8 @@ function runQuery() {
         // trim all extra whitespace using jQuery trim
         script = $.trim(script);
         // grab the parameters from the inputs we defined
-        var queryParams = {
-            from_date: date_to_string(dates.from),
-            to_date: date_to_string(dates.to),
-            event_list: event_list_input,
-        }
-        // convert to string
-        var params = {
-            params: JSON.stringify(queryParams)
-        };
-        
-        MP.api.custom_query(script, params).done(function(results) {
+
+        MP.api.custom_query(script).done(function(results) {
             cqResult = results[0];
             $('<div></div>').appendTo('body').MPTable({
             data: median(cqResult)
