@@ -60,7 +60,7 @@ getALift = function (item) {
 
 function main() {
   return Events({
-    to_date: "2016-03-22", // new Date().toISOString().split("T")[0],
+    to_date: new Date().toISOString().split("T")[0],
     from_date: "2016-03-21", // new Date().toISOString().split("T")[0],
   })
   .filter(function(e) {
