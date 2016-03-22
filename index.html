@@ -33,20 +33,13 @@
             else
               return (numArr[half-1] + numArr[half]) / 2.0;
             }
-            var med = median(cqResult);
+            var med = median(results);
             console.log(med)
         });
     }
     $(document).ready(function() {
       runQuery();
     });
-    $('#dates').on('change', function() {
-      runQuery();
-    });
-    $('#run').on('click', function() {
-      runQuery();
-    });
-
     <script type="text/cq" id="cq">
 getLift = function ( event, letter ) {
     return event.properties["lift-".concat(letter)];
