@@ -7,26 +7,13 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-          <div class="mixpanel-platform-section">
-          <div id="dates"></div>
-          <div class="events">
-              <div class="label">Baseline or Experiment?:</div>
-              <input id="event_list" value="Baseline performance,Experiment performance">
-              <div id="run">RUN</div>
-          </div>
+      <div class="mixpanel-platform-section">
+          <div id="run">RUN</div>
           <div id="table"></div>
       </div>
       
 // Set a global variable for the Custom Query result
     var cqResult;
-
-// We'll need to convert dates to strings to include them in our query
-  function date_to_string(d) {
-      return d.toISOString().split('T')[0];
-    }
-
-var datepicker = $('#dates').MPDatepicker();
-var event_list_input;
 
 function runQuery() {
     event_list_input = $('#event_list').val().split(',');
