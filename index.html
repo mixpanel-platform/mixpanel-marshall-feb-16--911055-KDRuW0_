@@ -12,6 +12,7 @@
     <div class="mixpanel-platform-section">
         <div id="graph"></div>
     </div>
+    
     <script>
     // Set a global variable for the Custom Query result
     var cqResult;
@@ -38,9 +39,12 @@
             console.log(med)
         });
     }
+    
     $(document).ready(function() {
       runQuery();
     });
+    </script>
+    
     <script type="text/cq" id="cq">
 getLift = function ( event, letter ) {
     return event.properties["lift-".concat(letter)];
