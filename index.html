@@ -38,7 +38,8 @@
             console.log(median(results))
             
             $('<div></div>').appendTo('body').MPTable({
-              data: {"Median A Variance": median(results)}
+              firstColHeader: "Median Variance"
+              data: {"A lift": median(results)}
             })
             
         });
