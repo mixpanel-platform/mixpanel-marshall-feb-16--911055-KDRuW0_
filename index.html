@@ -16,9 +16,6 @@
     var cqResult;
 
 function runQuery() {
-    event_list_input = $('#event_list').val().split(',');
-    path_length_input = parseInt($('#path_length').val());
-    var dates = datepicker.val();
     median = function( numArr ) {
     numArr.sort( function(a,b) {return a - b;} );
     var half = Math.floor(numArr.length/2);
@@ -26,8 +23,7 @@ function runQuery() {
         return numArr[half];
     else
         return (numArr[half-1] + numArr[half]) / 2.0;
-  }
-
+    }
 
     // clear previous query
         $('#path svg').hide();
